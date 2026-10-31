@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Katalog Książek</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .controls { margin: 20px 0; padding: 15px; background: #f0f0f0; border-radius: 5px; }
+        button { padding: 10px 15px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+        .book-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .status-msg { margin: 15px 0; font-weight: bold; color: #555; }
+        .error-msg { color: #d9534f; }
+        .badge-true { color: green; font-weight: bold; }
+        .badge-false { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Moja Kolekcja Książek</h1>
+    <p>Aplikacja demonstracyjna - API Django i JavaScript fetch()</p>
+    
+    <div class="controls">
+        <label>
+            <input type="checkbox" id="available-filter"> 
+            Pokaż tylko dostępne książki
+        </label>
+        <br><br>
+        <button id="load-btn">Wczytaj dane</button>
+    </div>
+    
+    <!-- Miejsca na komunikaty i wyniki z API -->
+    <div id="status-container" class="status-msg"></div>
+    <div id="results-area"></div>
+
+    <script>
+        const btn = document.getElementById('load-btn');
+        const filter = document.getElementById('available-filter');
+        const statusContainer = document.getElementById('status-container');
+        const resultsArea = document.getElementById('results-area');
+
+        btn.addEventListener('click', () => {
+            // 1. Budowanie adresu URL z parametrem filtra
+            let url = '/api/obiekty/';
+            if (filter.checked) {
+                url += '?available=true';
+            }
+
+            // 2. Obsługa ładowania
+            statusContainer.textContent = 'Pobieranie danych z serwera...';
+            statusContainer.className = 'status-msg';
+            resultsArea.innerHTML = ''; // czyszczenie poprzednich wyników
+
+            // 3. Wysłanie żądania HTTP GET
+            fetch(url)
+                .then(response => {
+                    // Sprawdzanie poprawności odpowiedzi
+                    if (!response.ok) {
+                        throw new Error(`Błąd HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    statusContainer.textContent = ''; // Usunięcie komunikatu o ładowaniu
+                    
+                    const items = data.items;
+                    
+                    // Obsługa pustej listy
+                    if (items.length === 0) {
+                        statusContainer.textContent = 'Brak rekordów spełniających kryteria.';
+                        return;
+                    }
+
+                    // 4. Bezpieczna aktualizacja DOM dla każdego obiektu
+                    items.forEach(book => {
+                        const card = document.createElement('div');
+                        card.className = 'book-card';
+                        
+                        const title = document.createElement('h3');
+                        title.textContent = `${book.title} (${book.published_year})`;
+                        
+                        const author = document.createElement('p');
+                        author.textContent = `Autor: ${book.author}`;
+                        
+                        const availability = document.createElement('p');
+                        availability.textContent = book.is_available ? '✔ Dostępna' : '✘ Wypożyczona';
+                        availability.className = book.is_available ? 'badge-true' : 'badge-false';
+                        
+                        // Złożenie karty i wstawienie na stronę
+                        card.appendChild(title);
+                        card.appendChild(author);
+                        card.appendChild(availability);
+                        resultsArea.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    // Obsługa błędów sieci/serwera
+                    statusContainer.textContent = 'Wystąpił błąd podczas pobierania danych.';
+                    statusContainer.className = 'status-msg error-msg';
+                    console.error('Fetch error:', error);
+                });
+        });
+    </script>
+</body>
+</html>

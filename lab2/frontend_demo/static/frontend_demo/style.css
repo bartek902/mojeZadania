@@ -1,0 +1,77 @@
+/* 1. Eksperymenty z czcionkami i kolorami */
+body {
+    /* Nowoczesna czcionka bezszeryfowa */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef2f5; /* Delikatniejszy, chłodny szary */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    /* Elegancki gradient w tle zamiast jednego koloru */
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    text-align: center;
+    padding: 1.5em;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Delikatny cień */
+}
+
+/* Wygląd menu na komputerach (poziomy) */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Odstępy między linkami */
+    margin-top: 15px;
+}
+
+nav a {
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px; /* Zaokrąglone przyciski */
+    transition: background-color 0.3s ease; /* Płynne podświetlenie */
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+main {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* 2. Responsywność za pomocą Media Queries */
+/* Reguły poniżej włączą się TYLKO na ekranach węższych niż 600px */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 1.5rem; /* Mniejszy tytuł na telefonie */
+    }
+
+    nav {
+        /* Zmiana układu na PIONOWY */
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    nav a {
+        display: block;
+        padding: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Linie między linkami */
+    }
+
+    nav a:last-child {
+        border-bottom: none; /* Usunięcie linii pod ostatnim linkiem */
+    }
+}
