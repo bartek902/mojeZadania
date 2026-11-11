@@ -1,0 +1,8 @@
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+.controls { margin: 20px 0; padding: 15px; background: #f0f0f0; border-radius: 5px; }
+button { padding: 10px 15px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+.book-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+.status-msg { margin: 15px 0; font-weight: bold; color: #555; }
+.error-msg { color: #d9534f; }
+.badge-true { color: green; font-weight: bold; }
+.badge-false { color: red; font-weight: bold; }
